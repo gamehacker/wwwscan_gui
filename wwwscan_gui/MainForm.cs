@@ -42,7 +42,7 @@ namespace wwwscan_gui
             }
         }
 
-    
+
 
         private bool changeList()
         {
@@ -127,22 +127,26 @@ namespace wwwscan_gui
 
         private void button_startscan_Click(object sender, EventArgs e)
         {
-            this.changeList();
-            Process process = new Process
-            {
-                StartInfo = { FileName = "wwwscan.exe" }
-            };
-            if (this.getPath() == "")
-            {
-                //process.StartInfo.Arguments = this.txtTarget.Text + " -p " + this.txtPort.Text + " -m " + this.txtThread.Text;
-            }
-            else
-            {
-                //process.StartInfo.Arguments = this.txtTarget.Text + " -r " + this.getPath() + " -p " + this.txtPort.Text + " -m " + this.txtThread.Text;
-            }
-            process.EnableRaisingEvents = true;
-            process.Exited += new EventHandler(this.p_Exited);
-            process.Start();
+            TXTFactory f = new TXTFactory();
+            DateTime d = DateTime.Now;
+            f.PrepareDics(f.ReadTXT(this.textBox_target.Text));
+            this.textBox_port.Text = ((DateTime.Now - d)).ToString();
+            //this.changeList();
+            //Process process = new Process
+            //{
+            //    StartInfo = { FileName = "wwwscan.exe" }
+            //};
+            //if (this.getPath() == "")
+            //{
+            //    //process.StartInfo.Arguments = this.txtTarget.Text + " -p " + this.txtPort.Text + " -m " + this.txtThread.Text;
+            //}
+            //else
+            //{
+            //    //process.StartInfo.Arguments = this.txtTarget.Text + " -r " + this.getPath() + " -p " + this.txtPort.Text + " -m " + this.txtThread.Text;
+            //}
+            //process.EnableRaisingEvents = true;
+            //process.Exited += new EventHandler(this.p_Exited);
+            //process.Start();
         }
     }
 }

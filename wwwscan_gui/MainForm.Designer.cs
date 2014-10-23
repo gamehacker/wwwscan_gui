@@ -34,14 +34,13 @@
             this.textBox_threadnum = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.checkBox7 = new System.Windows.Forms.CheckBox();
-            this.checkBox8 = new System.Windows.Forms.CheckBox();
-            this.checkBox9 = new System.Windows.Forms.CheckBox();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBox8 = new System.Windows.Forms.CheckBox();
+            this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -81,11 +80,10 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.checkBox5);
             this.panel1.Controls.Add(this.checkBox7);
             this.panel1.Controls.Add(this.checkBox8);
-            this.panel1.Controls.Add(this.checkBox9);
             this.panel1.Controls.Add(this.checkBox4);
-            this.panel1.Controls.Add(this.checkBox5);
             this.panel1.Controls.Add(this.checkBox6);
             this.panel1.Controls.Add(this.checkBox3);
             this.panel1.Controls.Add(this.checkBox2);
@@ -105,26 +103,6 @@
             this.checkBox7.Text = "edit";
             this.checkBox7.UseVisualStyleBackColor = true;
             // 
-            // checkBox8
-            // 
-            this.checkBox8.AutoSize = true;
-            this.checkBox8.Location = new System.Drawing.Point(215, 88);
-            this.checkBox8.Name = "checkBox8";
-            this.checkBox8.Size = new System.Drawing.Size(36, 16);
-            this.checkBox8.TabIndex = 20;
-            this.checkBox8.Text = "db";
-            this.checkBox8.UseVisualStyleBackColor = true;
-            // 
-            // checkBox9
-            // 
-            this.checkBox9.AutoSize = true;
-            this.checkBox9.Location = new System.Drawing.Point(215, 55);
-            this.checkBox9.Name = "checkBox9";
-            this.checkBox9.Size = new System.Drawing.Size(42, 16);
-            this.checkBox9.TabIndex = 19;
-            this.checkBox9.Text = "rar";
-            this.checkBox9.UseVisualStyleBackColor = true;
-            // 
             // checkBox4
             // 
             this.checkBox4.AutoSize = true;
@@ -134,16 +112,6 @@
             this.checkBox4.TabIndex = 18;
             this.checkBox4.Text = "dir";
             this.checkBox4.UseVisualStyleBackColor = true;
-            // 
-            // checkBox5
-            // 
-            this.checkBox5.AutoSize = true;
-            this.checkBox5.Location = new System.Drawing.Point(131, 88);
-            this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(42, 16);
-            this.checkBox5.TabIndex = 17;
-            this.checkBox5.Text = "txt";
-            this.checkBox5.UseVisualStyleBackColor = true;
             // 
             // checkBox6
             // 
@@ -180,10 +148,30 @@
             this.checkBox1.AutoSize = true;
             this.checkBox1.Location = new System.Drawing.Point(47, 55);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(42, 16);
+            this.checkBox1.Size = new System.Drawing.Size(48, 16);
             this.checkBox1.TabIndex = 13;
-            this.checkBox1.Text = "asp";
+            this.checkBox1.Text = "html";
             this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // checkBox8
+            // 
+            this.checkBox8.AutoSize = true;
+            this.checkBox8.Location = new System.Drawing.Point(215, 88);
+            this.checkBox8.Name = "checkBox8";
+            this.checkBox8.Size = new System.Drawing.Size(54, 16);
+            this.checkBox8.TabIndex = 20;
+            this.checkBox8.Text = "other";
+            this.checkBox8.UseVisualStyleBackColor = true;
+            // 
+            // checkBox5
+            // 
+            this.checkBox5.AutoSize = true;
+            this.checkBox5.Location = new System.Drawing.Point(143, 88);
+            this.checkBox5.Name = "checkBox5";
+            this.checkBox5.Size = new System.Drawing.Size(60, 16);
+            this.checkBox5.TabIndex = 22;
+            this.checkBox5.Text = "backup";
+            this.checkBox5.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -212,14 +200,13 @@
         private System.Windows.Forms.TextBox textBox_threadnum;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.CheckBox checkBox7;
-        private System.Windows.Forms.CheckBox checkBox8;
-        private System.Windows.Forms.CheckBox checkBox9;
         private System.Windows.Forms.CheckBox checkBox4;
-        private System.Windows.Forms.CheckBox checkBox5;
         private System.Windows.Forms.CheckBox checkBox6;
         private System.Windows.Forms.CheckBox checkBox3;
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox checkBox8;
+        private System.Windows.Forms.CheckBox checkBox5;
     }
 }
 
