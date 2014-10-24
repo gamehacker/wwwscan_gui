@@ -12,23 +12,26 @@ namespace wwwscan_gui
     /// </summary>
     public class TXTFactory
     {
-
-        public TXTFactory() { }
-
-
-
         /// <summary>
         /// 读取原始字典库
         /// </summary>
         /// <param name="path"></param>
         public List<string> ReadTXT(string path)
         {
+            if (!File.Exists(path))
+            {
+                return null;
+            }
             var cgi_list = new List<string>();
             using (StreamReader sr = new StreamReader(path, Encoding.Default))
             {
                 String line;
                 while ((line = sr.ReadLine()) != null)
                 {
+                    if (!line.StartsWith("/"))
+                    {
+                        line = "/" + line;
+                    }
                     cgi_list.Add(line);
                 }
             }
@@ -39,17 +42,24 @@ namespace wwwscan_gui
         /// 写文件
         /// </summary>
         /// <param name="filepath"></param>
-        /// <param name="filecontent"></param>
-        public void WriteTXT(string filepath, string filecontent)
+        /// <param name="filelines"></param>
+        /// <param name="iscreate">真为写入，假为追加</param>
+        public void WriteTXT(string filepath, List<string> filelines, bool iscreate = false)
         {
-            if (File.Exists(filepath))
+            if (File.Exists(filepath) && iscreate)
             {
                 File.Delete(filepath);
             }
-            if (filecontent != null)
+            if (filelines != null)
             {
-                using (FileStream fs = new FileStream(filepath, FileMode.Create))
+                var filemode = iscreate ? FileMode.Create : FileMode.Append;
+                using (FileStream fs = new FileStream(filepath, filemode))
                 {
+                    var filecontent = string.Empty;
+                    foreach (string item in filelines)
+                    {
+                        filecontent += item + "\r\n";
+                    }
                     byte[] data = System.Text.Encoding.Default.GetBytes(filecontent);
                     fs.Write(data, 0, data.Length);
                     fs.Flush();
@@ -58,7 +68,19 @@ namespace wwwscan_gui
             }
         }
 
-
+        /// <summary>
+        /// 清除重复字典内容
+        /// </summary>
+        /// <param name="path"></param>
+        public void DistinctTXT(string path)
+        {
+            var file = ReadTXT(path);
+            if (file != null)
+            {
+                file = file.Distinct().ToList();
+                WriteTXT(path, file, true);
+            }
+        }
 
         /// <summary>
         /// 分类
@@ -71,9 +93,10 @@ namespace wwwscan_gui
                 cgi_list = cgi_list.Distinct().ToList();
                 var result = new Dictionary<string, List<string>>();
                 //***************************************************
+                //.aspx包含.asp
                 var aspx = (from o in cgi_list
-                            where o.Contains(".aspx") || o.Contains(".asp") || o.Contains(".cgi")
-                            || o.Contains(".asa") || o.Contains(".ashx")
+                            where o.Contains(".asp") || o.Contains(".cgi")
+                              || o.Contains(".asa") || o.Contains(".ashx")
                             select o);
                 result.Add("aspx", aspx.ToList());
                 //***************************************************
@@ -101,13 +124,12 @@ namespace wwwscan_gui
                 result.Add("other", other.ToList());
                 //***************************************************
                 var editor = (from o in cgi_list
-                              where o.Contains("fckeditor") || o.Contains("ewebeditor") || o.Contains("webedit")
-                              || o.Contains("GfEditor") || o.Contains("eWebEditor") || o.Contains("editor")
+                              where o.Contains("webedit") || o.Contains("Editor") || o.Contains("editor")
                               select o);
                 result.Add("editor", editor.ToList());
                 //***************************************************注意有个endwith
                 var dir = (from o in cgi_list
-                           where (!o.Contains(".")) || (o.EndsWith("/"))
+                           where (!o.Contains(".")) || o.Contains("svn") || (o.EndsWith("/"))
                            select o);
                 result.Add("dir", dir.ToList());
                 //***************************************************

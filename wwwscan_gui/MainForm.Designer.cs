@@ -33,14 +33,15 @@
             this.textBox_port = new System.Windows.Forms.TextBox();
             this.textBox_threadnum = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.checkBox7 = new System.Windows.Forms.CheckBox();
+            this.checkBox8 = new System.Windows.Forms.CheckBox();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox8 = new System.Windows.Forms.CheckBox();
-            this.checkBox5 = new System.Windows.Forms.CheckBox();
+            this.button_builddic = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -93,6 +94,16 @@
             this.panel1.Size = new System.Drawing.Size(341, 193);
             this.panel1.TabIndex = 13;
             // 
+            // checkBox5
+            // 
+            this.checkBox5.AutoSize = true;
+            this.checkBox5.Location = new System.Drawing.Point(143, 88);
+            this.checkBox5.Name = "checkBox5";
+            this.checkBox5.Size = new System.Drawing.Size(60, 16);
+            this.checkBox5.TabIndex = 22;
+            this.checkBox5.Text = "backup";
+            this.checkBox5.UseVisualStyleBackColor = true;
+            // 
             // checkBox7
             // 
             this.checkBox7.AutoSize = true;
@@ -102,6 +113,16 @@
             this.checkBox7.TabIndex = 21;
             this.checkBox7.Text = "edit";
             this.checkBox7.UseVisualStyleBackColor = true;
+            // 
+            // checkBox8
+            // 
+            this.checkBox8.AutoSize = true;
+            this.checkBox8.Location = new System.Drawing.Point(215, 88);
+            this.checkBox8.Name = "checkBox8";
+            this.checkBox8.Size = new System.Drawing.Size(54, 16);
+            this.checkBox8.TabIndex = 20;
+            this.checkBox8.Text = "other";
+            this.checkBox8.UseVisualStyleBackColor = true;
             // 
             // checkBox4
             // 
@@ -153,31 +174,22 @@
             this.checkBox1.Text = "html";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
-            // checkBox8
+            // button_builddic
             // 
-            this.checkBox8.AutoSize = true;
-            this.checkBox8.Location = new System.Drawing.Point(215, 88);
-            this.checkBox8.Name = "checkBox8";
-            this.checkBox8.Size = new System.Drawing.Size(54, 16);
-            this.checkBox8.TabIndex = 20;
-            this.checkBox8.Text = "other";
-            this.checkBox8.UseVisualStyleBackColor = true;
-            // 
-            // checkBox5
-            // 
-            this.checkBox5.AutoSize = true;
-            this.checkBox5.Location = new System.Drawing.Point(143, 88);
-            this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(60, 16);
-            this.checkBox5.TabIndex = 22;
-            this.checkBox5.Text = "backup";
-            this.checkBox5.UseVisualStyleBackColor = true;
+            this.button_builddic.Location = new System.Drawing.Point(13, 297);
+            this.button_builddic.Name = "button_builddic";
+            this.button_builddic.Size = new System.Drawing.Size(75, 23);
+            this.button_builddic.TabIndex = 14;
+            this.button_builddic.Text = "导入字典";
+            this.button_builddic.UseVisualStyleBackColor = true;
+            this.button_builddic.Click += new System.EventHandler(this.button_builddic_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(365, 332);
+            this.Controls.Add(this.button_builddic);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.textBox_threadnum);
             this.Controls.Add(this.textBox_port);
@@ -207,6 +219,7 @@
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.CheckBox checkBox8;
         private System.Windows.Forms.CheckBox checkBox5;
+        private System.Windows.Forms.Button button_builddic;
     }
 }
 
