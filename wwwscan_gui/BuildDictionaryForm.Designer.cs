@@ -56,6 +56,7 @@
             this.textBox_filepath.Name = "textBox_filepath";
             this.textBox_filepath.Size = new System.Drawing.Size(260, 42);
             this.textBox_filepath.TabIndex = 1;
+            this.textBox_filepath.Text = "newlists.txt";
             // 
             // button_import
             // 
@@ -85,6 +86,7 @@
             this.textBox_result.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
             this.textBox_result.Size = new System.Drawing.Size(259, 89);
             this.textBox_result.TabIndex = 4;
+            this.textBox_result.Text = "导入的字典以txt存放在dic目录下\r\n";
             this.textBox_result.TextChanged += new System.EventHandler(this.textBox_result_TextChanged);
             // 
             // backgroundWorker_import
@@ -112,7 +114,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 264);
+            this.ClientSize = new System.Drawing.Size(284, 262);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.textBox_result);
             this.Controls.Add(this.button_distinct);

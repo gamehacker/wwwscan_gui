@@ -14,7 +14,7 @@ namespace wwwscan_gui
     public partial class BuildDictionaryForm : Form
     {
 
-        private string base_dicpath = Application.StartupPath + "/dic/";
+        private string base_dicpath = Application.StartupPath + "\\dic\\";
 
         //private int num_aspx = 0;
         //private int num_backup = 0;
@@ -41,7 +41,7 @@ namespace wwwscan_gui
             // this.textBox_result.Enabled = turnon;
         }
 
-   
+
 
         private void button_openfile_Click(object sender, EventArgs e)
         {
@@ -163,7 +163,7 @@ namespace wwwscan_gui
             if (this.backgroundWorker_distinct.IsBusy || this.backgroundWorker_import.IsBusy)
             {
                 var result = MessageBox.Show("强行关闭会造成字典缺失，确认继续？", "任务进行中！", MessageBoxButtons.OKCancel);
-                e.Cancel = !(result == DialogResult.OK);
+                e.Cancel = result != DialogResult.OK;
             }
         }
 

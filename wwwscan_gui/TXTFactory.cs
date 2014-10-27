@@ -12,7 +12,7 @@ namespace wwwscan_gui
     public class TXTFactory
     {
         /// <summary>
-        /// 读取原始字典库
+        /// 读取字典库
         /// </summary>
         /// <param name="path"></param>
         public List<string> ReadTXT(string path)
