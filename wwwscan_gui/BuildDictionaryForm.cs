@@ -13,6 +13,19 @@ namespace wwwscan_gui
 {
     public partial class BuildDictionaryForm : Form
     {
+
+        private string base_dicpath = Application.StartupPath + "/dic/";
+
+        //private int num_aspx = 0;
+        //private int num_backup = 0;
+        //private int num_dir = 0;
+        //private int num_editor = 0;
+        //private int num_html = 0;
+        //private int num_java = 0;
+        //private int num_other = 0;
+        //private int num_php = 0;
+
+
         public BuildDictionaryForm()
         {
             InitializeComponent();
@@ -28,7 +41,7 @@ namespace wwwscan_gui
             // this.textBox_result.Enabled = turnon;
         }
 
-        private string base_dicpath = Application.StartupPath + "/dic/";
+   
 
         private void button_openfile_Click(object sender, EventArgs e)
         {
@@ -50,6 +63,15 @@ namespace wwwscan_gui
             var list = factory.ReadTXT(this.textBox_filepath.Text);
             var listlist = factory.PrepareDics(list);
 
+            //num_aspx = listlist["aspx"].Count;
+            //num_backup = listlist["backup"].Count;
+            //num_dir = listlist["dir"].Count;
+            //num_editor = listlist["editor"].Count;
+            //num_html = listlist["html"].Count;
+            //num_java = listlist["java"].Count;
+            //num_other = listlist["other"].Count;
+            //num_php = listlist["php"].Count;
+
             List<string> index = new List<string>(listlist.Keys);
             for (int i = 0; i < listlist.Count; i++)
             {
@@ -66,7 +88,16 @@ namespace wwwscan_gui
         private void backgroundWorker_import_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             this.progressBar1.Value = 100;
-            this.textBox_result.Text += "导入完成！\r\n";
+            this.textBox_result.Text += "导入成功！\r\n";
+            //this.textBox_result.Text += string.Format("共导入aspx{0}条\r\nbackup{1}条\r\ndir{2}条\r\neditor{3}条\r\nhtml{4}条\r\njava{5}条\r\nother{6}条\r\nphp{7}条\r\n导入完成！\r\n",
+            //                                        num_aspx,
+            //                                        num_backup,
+            //                                        num_dir,
+            //                                        num_editor,
+            //                                        num_html,
+            //                                        num_java,
+            //                                        num_other,
+            //                                        num_php);
             ControlsDisable(true);
         }
 
@@ -131,9 +162,8 @@ namespace wwwscan_gui
         {
             if (this.backgroundWorker_distinct.IsBusy || this.backgroundWorker_import.IsBusy)
             {
-                var result = MessageBox.Show("关闭会造成字典缺失，确认继续？", "任务进行中！", MessageBoxButtons.OKCancel);
-                e.Cancel = result == DialogResult.OK ? false : true;
-
+                var result = MessageBox.Show("强行关闭会造成字典缺失，确认继续？", "任务进行中！", MessageBoxButtons.OKCancel);
+                e.Cancel = !(result == DialogResult.OK);
             }
         }
 

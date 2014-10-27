@@ -17,6 +17,7 @@ namespace wwwscan_gui
         public MainForm()
         {
             InitializeComponent();
+
         }
 
 

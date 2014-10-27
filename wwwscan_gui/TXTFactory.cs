@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace wwwscan_gui
 {
@@ -39,6 +38,16 @@ namespace wwwscan_gui
         }
 
         /// <summary>
+        /// 获取文本总行数
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public int GetLineNum(string path)
+        {
+            return ReadTXT(path).Count;
+        }
+
+        /// <summary>
         /// 写文件
         /// </summary>
         /// <param name="filepath"></param>
@@ -63,7 +72,6 @@ namespace wwwscan_gui
                     byte[] data = System.Text.Encoding.Default.GetBytes(filecontent);
                     fs.Write(data, 0, data.Length);
                     fs.Flush();
-                    fs.Close();
                 }
             }
         }
