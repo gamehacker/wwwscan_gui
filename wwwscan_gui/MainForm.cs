@@ -16,8 +16,11 @@ namespace wwwscan_gui
     {
         private readonly string _base_dicpath = Application.StartupPath + "\\dic\\";
         private readonly string _dicname = "cgi.list";
-        private string host = string.Empty;
-        private string type = string.Empty;
+        private string _host = string.Empty;
+        private string _subpath = string.Empty;
+        private string _port = string.Empty;
+        private string _ssl = string.Empty;
+        private string _type = string.Empty;
 
         public MainForm()
         {
@@ -66,14 +69,13 @@ namespace wwwscan_gui
         /// 0为host，1为port,2为path，3为" -ssl "或空
         /// </summary>
         /// <returns></returns>
-        private string[] getPath()
+        private void SetPath()
         {
-            var result = new string[4];
             var tar = this.textBox_target.Text.Trim();
             string target = string.Empty;
             if (tar.StartsWith("https://"))
             {
-                result[3] = " -ssl ";
+                _ssl = " -ssl ";
                 target = tar;
             }
             else if (!tar.StartsWith("http"))
@@ -84,25 +86,15 @@ namespace wwwscan_gui
             {
                 target = tar;
             }
-
-            try
+            var url = new Uri(target);
+            _host = url.Host;
+            _port = url.Port.ToString();
+            var path = string.Empty;
+            foreach (string item in url.Segments)
             {
-                var url = new Uri(target);
-                result[0] = url.Host;
-                result[1] = url.Port.ToString();
-                var path = string.Empty;
-                foreach (string item in url.Segments)
-                {
-                    path += item;
-                }
-                result[2] = path;
-
+                path += item;
             }
-            catch (UriFormatException)
-            {
-                result = null;
-            }
-            return result;
+            _subpath = path;
         }
 
 
@@ -122,7 +114,7 @@ namespace wwwscan_gui
                     if (radio.Checked)
                     {
                         result = radio.Name != "radiobtn_all" ? radio.Text : "all";
-                        type = result;
+                        _type = result;
                         break;
                     }
                     else
@@ -137,12 +129,12 @@ namespace wwwscan_gui
 
         private void p_Exited(object sender, EventArgs e)
         {
-            var report = Application.StartupPath + "\\" + this.host + ".html";
+            var report = Application.StartupPath + "\\" + this._host + ".html";
             if (File.Exists(report))
             {
-                File.Move(report, Application.StartupPath + "\\" + this.host + "(" + this.type + ")" + ".html");
+                File.Move(report, Application.StartupPath + "\\" + this._host + "(" + this._type + ")" + ".html");
             }
-            MessageBox.Show("主机:" + this.host + "\r\n扫描完毕,请查看程序目录下的报告");
+            MessageBox.Show(this._host + _subpath + "\r\n扫描完毕,请查看程序目录下的报告");
             Action<bool> act = new Action<bool>(ControlsDisable);
             var objs = new object[] { true };
             this.Invoke(act, objs);
@@ -222,27 +214,17 @@ namespace wwwscan_gui
                 StartInfo = { FileName = "wwwscan.exe" }
                 //   StartInfo = { FileName = Application.StartupPath + "\\..\\..\\wwwscan.exe" }
             };
-            var target = this.getPath();
-            if (target != null)
-            {
-                this.host = target[0];//以后传给exited
-                var port = target[1];
-                var threadnum = this.textBox_threadnum.Text;
-                var ssl = (string.IsNullOrEmpty(target[3]) ? string.Empty : target[3]);
+            this.SetPath();
+            var threadnum = this.textBox_threadnum.Text;
 
-                process.StartInfo.Arguments = target[0]
-                    + " -p " + target[1]
-                    + " -m " + threadnum
-                    + " -r " + target[2]
-                    + ssl;
-                process.EnableRaisingEvents = true;
-                process.Exited += new EventHandler(this.p_Exited);
-                process.Start();
-            }
-            else
-            {
-                throw new ArgumentNullException("地址有误");
-            }
+            process.StartInfo.Arguments = _host
+                + " -p " + _port
+                + " -m " + threadnum
+                + " -r " + _subpath
+                + _ssl;
+            process.EnableRaisingEvents = true;
+            process.Exited += new EventHandler(this.p_Exited);
+            process.Start();
         }
     }
 }
