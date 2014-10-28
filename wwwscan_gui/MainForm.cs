@@ -14,7 +14,10 @@ namespace wwwscan_gui
 {
     public partial class MainForm : Form
     {
-        private string base_dicpath = Application.StartupPath + "\\dic\\";
+        private readonly string _base_dicpath = Application.StartupPath + "\\dic\\";
+        private readonly string _dicname = "cgi.list";
+        private string host = string.Empty;
+        private string type = string.Empty;
 
         public MainForm()
         {
@@ -22,65 +25,40 @@ namespace wwwscan_gui
             InitCtrls();
         }
 
+        private void ControlsDisable(bool turnon)
+        {
+            foreach (Control item in this.Controls)
+            {
+                item.Enabled = turnon;
+            }
+        }
+
+
         private void InitCtrls()
         {
-            var files = Directory.GetFiles(base_dicpath);
+            var files = Directory.GetFiles(_base_dicpath);
             if (files.Length == 0)
             {
                 MessageBox.Show("无字典库，请先导入字典");
             }
             else
             {
-                foreach (string item in files)
+                for (int i = 0; i < files.Length; i++)
                 {
-                    var index = item.LastIndexOf('\\') + 1;
-                    var filename = item.Substring(index, item.Length - index);
+                    var index = files[i].LastIndexOf('\\') + 1;
+                    var filename = files[i].Substring(index, files[i].Length - index);
                     var radio = new RadioButton();
                     radio.Name = "radiobtn_" + filename;
                     radio.Text = filename;
+                    radio.Checked = i == 0;
                     this.mainPanel.Controls.Add(radio);
                 }
                 var radioall = new RadioButton();
                 radioall.Name = "radiobtn_all";
-                radioall.Text = "全部(较慢)";
+                radioall.Text = "全部(很慢)";
                 this.mainPanel.Controls.Add(radioall);
             }
         }
-
-
-        private void InitCgilist()
-        {
-            var file = this.getType();
-            if (file == string.Empty)
-            {
-                throw new ArgumentNullException("请勾选一个类型");
-            }
-            else if (file != "all")
-            {
-                FileInfo info = new FileInfo(this.base_dicpath + "\\" + file);
-                if (System.IO.File.Exists(Application.StartupPath + "\\cgi.list"))
-                {
-                    System.IO.File.Delete(Application.StartupPath + "\\cgi.list");
-                }
-                info.CopyTo(Application.StartupPath + "\\cgi.list");
-            }
-            else
-            {
-                var factory = new TXTFactory();
-                var newcgilist = new List<string>();
-                var files = Directory.GetFiles(base_dicpath);
-                foreach (var item in files)
-                {
-                    var dic = factory.ReadTXT(item);
-                    if (dic.Count > 0)
-                    {
-                        newcgilist.AddRange(dic);
-                    }
-                }
-                factory.WriteTXT("cgilist", newcgilist, true);
-            }
-        }
-
 
         /// <summary>
         /// 获取路径 
@@ -93,16 +71,19 @@ namespace wwwscan_gui
             var result = new string[4];
             var tar = this.textBox_target.Text.Trim();
             string target = string.Empty;
-            if (!tar.StartsWith("http"))
-            {
-                target = "http://" + tar;
-            }
             if (tar.StartsWith("https://"))
             {
                 result[3] = " -ssl ";
                 target = tar;
             }
-
+            else if (!tar.StartsWith("http"))
+            {
+                target = "http://" + tar;
+            }
+            else
+            {
+                target = tar;
+            }
 
             try
             {
@@ -121,14 +102,13 @@ namespace wwwscan_gui
             {
                 result = null;
             }
-
             return result;
         }
 
 
 
         /// <summary>
-        /// 获取勾选类型
+        /// 获取勾选类型,返回all为特殊处理
         /// </summary>
         /// <returns></returns>
         private string getType()
@@ -142,6 +122,8 @@ namespace wwwscan_gui
                     if (radio.Checked)
                     {
                         result = radio.Name != "radiobtn_all" ? radio.Text : "all";
+                        type = result;
+                        break;
                     }
                     else
                     {
@@ -155,18 +137,18 @@ namespace wwwscan_gui
 
         private void p_Exited(object sender, EventArgs e)
         {
-            //MessageBox.Show(this.txtTarget.Text + "扫描完毕,请查看程序目录下的报告");
-        }
-
-
-        private void txtPort_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!((e.KeyChar == '\b') || char.IsDigit(e.KeyChar)))
+            var report = Application.StartupPath + "\\" + this.host + ".html";
+            if (File.Exists(report))
             {
-                e.Handled = true;
-                MessageBox.Show("端口号只能是数字");
+                File.Move(report, Application.StartupPath + "\\" + this.host + "(" + this.type + ")" + ".html");
             }
+            MessageBox.Show("主机:" + this.host + "\r\n扫描完毕,请查看程序目录下的报告");
+            Action<bool> act = new Action<bool>(ControlsDisable);
+            var objs = new object[] { true };
+            this.Invoke(act, objs);
         }
+
+
 
         private void txtThread_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -179,49 +161,88 @@ namespace wwwscan_gui
 
         private void button_startscan_Click(object sender, EventArgs e)
         {
-            try
-            {
-                this.InitCgilist();
-                Process process = new Process
-                {
-                    StartInfo = { FileName = "wwwscan.exe" }
-                    //   StartInfo = { FileName = Application.StartupPath + "\\..\\..\\wwwscan.exe" }
-                };
-                var target = this.getPath();
-                if (target != null)
-                {
-                    //除非url不带端口，否则以url中的为准
-                    var port = target[1];
-                    var threadnum = this.textBox_threadnum.Text;
-                    var ssl = (string.IsNullOrEmpty(target[3]) ? string.Empty : target[3]);
-
-                    var args = target[0]
-                        + " -p " + target[1]
-                        + " -m " + threadnum
-                        + " -r " + target[2]
-                        + ssl;
-                    process.StartInfo.Arguments = args;
-
-                    process.EnableRaisingEvents = true;
-                    process.Exited += new EventHandler(this.p_Exited);
-                    process.Start();
-                }
-                else
-                {
-                    throw new ArgumentNullException("地址有误");
-                }
-            }
-            catch (ArgumentNullException ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
+            ControlsDisable(false);
+            this.backgroundWorker_scan.RunWorkerAsync();
         }
 
         private void button_builddic_Click(object sender, EventArgs e)
         {
             var form = new BuildDictionaryForm();
             form.ShowDialog();
+        }
+
+        private void backgroundWorker_scan_DoWork(object sender, DoWorkEventArgs e)
+        {
+            ///准备字典
+            try
+            {
+                var file = this.getType();
+                if (file == string.Empty)
+                {
+                    throw new ArgumentNullException("请勾选一个类型");
+                }
+                else if (file != "all")
+                {
+                    FileInfo info = new FileInfo(this._base_dicpath + "\\" + file);
+                    var cgipath = Application.StartupPath + "\\" + _dicname;
+                    if (System.IO.File.Exists(cgipath))
+                    {
+                        System.IO.File.Delete(cgipath);
+                    }
+                    info.CopyTo(cgipath);
+                }
+                else
+                {
+                    var factory = new TXTFactory();
+                    var newcgilist = new List<string>();
+                    var files = Directory.GetFiles(_base_dicpath);
+                    foreach (var item in files)
+                    {
+                        var dic = factory.ReadTXT(item);
+                        if (dic.Count > 0)
+                        {
+                            newcgilist.AddRange(dic);
+                        }
+                    }
+                    factory.WriteTXT(_dicname, newcgilist, true);
+                }
+
+            }
+            catch (ArgumentNullException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void backgroundWorker_scan_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            //准备命令行参数
+            Process process = new Process
+            {
+                StartInfo = { FileName = "wwwscan.exe" }
+                //   StartInfo = { FileName = Application.StartupPath + "\\..\\..\\wwwscan.exe" }
+            };
+            var target = this.getPath();
+            if (target != null)
+            {
+                this.host = target[0];//以后传给exited
+                var port = target[1];
+                var threadnum = this.textBox_threadnum.Text;
+                var ssl = (string.IsNullOrEmpty(target[3]) ? string.Empty : target[3]);
+
+                process.StartInfo.Arguments = target[0]
+                    + " -p " + target[1]
+                    + " -m " + threadnum
+                    + " -r " + target[2]
+                    + ssl;
+                process.EnableRaisingEvents = true;
+                process.Exited += new EventHandler(this.p_Exited);
+                process.Start();
+            }
+            else
+            {
+                throw new ArgumentNullException("地址有误");
+            }
         }
     }
 }

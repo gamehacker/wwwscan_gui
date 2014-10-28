@@ -27,9 +27,15 @@ namespace wwwscan_gui
                 String line;
                 while ((line = sr.ReadLine()) != null)
                 {
+                    //没/的加/
                     if (!line.StartsWith("/"))
                     {
                         line = "/" + line;
+                    }
+                    //以//开头的去掉一个/（wwwscan不会区分//和/）
+                    if (line.StartsWith("//"))
+                    {
+                        line = line.Remove(0, 1);
                     }
                     cgi_list.Add(line);
                 }

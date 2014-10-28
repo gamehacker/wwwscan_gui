@@ -36,6 +36,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.backgroundWorker_scan = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // button_startscan
@@ -109,6 +110,11 @@
             this.label4.TabIndex = 19;
             this.label4.Text = "目标类型";
             // 
+            // backgroundWorker_scan
+            // 
+            this.backgroundWorker_scan.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_scan_DoWork);
+            this.backgroundWorker_scan.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_scan_RunWorkerCompleted);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -141,6 +147,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
+        private System.ComponentModel.BackgroundWorker backgroundWorker_scan;
     }
 }
 

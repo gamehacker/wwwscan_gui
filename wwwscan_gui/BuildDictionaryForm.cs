@@ -14,17 +14,7 @@ namespace wwwscan_gui
     public partial class BuildDictionaryForm : Form
     {
 
-        private string base_dicpath = Application.StartupPath + "\\dic\\";
-
-        //private int num_aspx = 0;
-        //private int num_backup = 0;
-        //private int num_dir = 0;
-        //private int num_editor = 0;
-        //private int num_html = 0;
-        //private int num_java = 0;
-        //private int num_other = 0;
-        //private int num_php = 0;
-
+        private readonly string _base_dicpath = Application.StartupPath + "\\dic\\";
 
         public BuildDictionaryForm()
         {
@@ -34,11 +24,15 @@ namespace wwwscan_gui
 
         private void ControlsDisable(bool turnon)
         {
-            this.button_distinct.Enabled = turnon;
-            this.button_import.Enabled = turnon;
-            this.button_openfile.Enabled = turnon;
-            this.textBox_filepath.Enabled = turnon;
-            // this.textBox_result.Enabled = turnon;
+            foreach (Control item in this.Controls)
+            {
+                if (!item.Equals(this.textBox_result))
+                {
+                    item.Enabled = turnon;
+                }
+
+            }
+
         }
 
 
@@ -54,28 +48,19 @@ namespace wwwscan_gui
         private void backgroundWorker_import_DoWork(object sender, DoWorkEventArgs e)
         {
 
-            if (!Directory.Exists(base_dicpath))
+            if (!Directory.Exists(_base_dicpath))
             {
-                Directory.CreateDirectory(base_dicpath);
+                Directory.CreateDirectory(_base_dicpath);
             }
 
             var factory = new TXTFactory();
             var list = factory.ReadTXT(this.textBox_filepath.Text);
             var listlist = factory.PrepareDics(list);
 
-            //num_aspx = listlist["aspx"].Count;
-            //num_backup = listlist["backup"].Count;
-            //num_dir = listlist["dir"].Count;
-            //num_editor = listlist["editor"].Count;
-            //num_html = listlist["html"].Count;
-            //num_java = listlist["java"].Count;
-            //num_other = listlist["other"].Count;
-            //num_php = listlist["php"].Count;
-
             List<string> index = new List<string>(listlist.Keys);
             for (int i = 0; i < listlist.Count; i++)
             {
-                factory.WriteTXT(Path.Combine(base_dicpath, index[i]), listlist[index[i]], false);
+                factory.WriteTXT(Path.Combine(_base_dicpath, index[i]), listlist[index[i]], false);
                 backgroundWorker_import.ReportProgress(100 * i / listlist.Count);
             }
         }
@@ -104,7 +89,7 @@ namespace wwwscan_gui
         private void backgroundWorker_distinct_DoWork(object sender, DoWorkEventArgs e)
         {
             var factory = new TXTFactory();
-            var files = Directory.GetFiles(base_dicpath);
+            var files = Directory.GetFiles(_base_dicpath);
 
             for (int i = 0; i < files.Length; i++)
             {
