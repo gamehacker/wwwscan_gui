@@ -41,6 +41,7 @@
             // 
             // button_startscan
             // 
+            this.button_startscan.Enabled = false;
             this.button_startscan.Location = new System.Drawing.Point(122, 297);
             this.button_startscan.Name = "button_startscan";
             this.button_startscan.Size = new System.Drawing.Size(75, 23);
@@ -119,7 +120,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(364, 332);
+            this.ClientSize = new System.Drawing.Size(364, 331);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);

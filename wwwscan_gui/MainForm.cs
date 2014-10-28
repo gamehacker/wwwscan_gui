@@ -39,7 +39,17 @@ namespace wwwscan_gui
 
         private void InitCtrls()
         {
-            var files = Directory.GetFiles(_base_dicpath);
+            string[] files;
+            try
+            {
+                files = Directory.GetFiles(_base_dicpath);
+            }
+            catch (DirectoryNotFoundException)
+            {
+                MessageBox.Show("未找到dic目录，请先使用倒入字典功能");
+                return;
+            }
+
             if (files.Length == 0)
             {
                 MessageBox.Show("无字典库，请先导入字典");
@@ -60,6 +70,7 @@ namespace wwwscan_gui
                 radioall.Name = "radiobtn_all";
                 radioall.Text = "全部(很慢)";
                 this.mainPanel.Controls.Add(radioall);
+                this.button_startscan.Enabled = true;
             }
         }
 
@@ -161,6 +172,8 @@ namespace wwwscan_gui
         {
             var form = new BuildDictionaryForm();
             form.ShowDialog();
+            this.mainPanel.Controls.Clear();
+            this.InitCtrls();
         }
 
         private void backgroundWorker_scan_DoWork(object sender, DoWorkEventArgs e)
