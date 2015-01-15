@@ -141,9 +141,14 @@ namespace wwwscan_gui
         private void p_Exited(object sender, EventArgs e)
         {
             var report = Application.StartupPath + "\\" + this._host + ".html";
+            var reportpath = Application.StartupPath + "\\reports";
+            if (!Directory.Exists(reportpath))
+            {
+                Directory.CreateDirectory(reportpath);
+            }
             if (File.Exists(report))
             {
-                File.Move(report, Application.StartupPath + "\\" + this._host + "(" + this._type + ")" + ".html");
+                File.Move(report, reportpath + "\\" + this._host + "(" + this._type + ")" + ".html");
             }
             MessageBox.Show(this._host + _subpath + "\r\n扫描完毕,请查看程序目录下的报告");
             Action<bool> act = new Action<bool>(ControlsDisable);
