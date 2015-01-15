@@ -244,5 +244,10 @@ namespace wwwscan_gui
             process.Exited += new EventHandler(this.p_Exited);
             process.Start();
         }
+
+        private void button_openstartup_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(Application.StartupPath);
+        }
     }
 }

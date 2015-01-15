@@ -37,11 +37,11 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.backgroundWorker_scan = new System.ComponentModel.BackgroundWorker();
+            this.button_openstartup = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button_startscan
             // 
-            this.button_startscan.Enabled = false;
             this.button_startscan.Location = new System.Drawing.Point(122, 297);
             this.button_startscan.Name = "button_startscan";
             this.button_startscan.Size = new System.Drawing.Size(75, 23);
@@ -116,11 +116,22 @@
             this.backgroundWorker_scan.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_scan_DoWork);
             this.backgroundWorker_scan.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_scan_RunWorkerCompleted);
             // 
+            // button_openstartup
+            // 
+            this.button_openstartup.Location = new System.Drawing.Point(266, 297);
+            this.button_openstartup.Name = "button_openstartup";
+            this.button_openstartup.Size = new System.Drawing.Size(75, 23);
+            this.button_openstartup.TabIndex = 20;
+            this.button_openstartup.Text = "打开目录";
+            this.button_openstartup.UseVisualStyleBackColor = true;
+            this.button_openstartup.Click += new System.EventHandler(this.button_openstartup_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(364, 331);
+            this.ClientSize = new System.Drawing.Size(364, 332);
+            this.Controls.Add(this.button_openstartup);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
@@ -149,6 +160,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.ComponentModel.BackgroundWorker backgroundWorker_scan;
+        private System.Windows.Forms.Button button_openstartup;
     }
 }
 
